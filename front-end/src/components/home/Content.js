@@ -9,6 +9,7 @@ function Content(props){
                 <GameCard />
                 <GameCard />
                 <GameCard />
+                <GameCard />
             </div>
         </div>
     )
