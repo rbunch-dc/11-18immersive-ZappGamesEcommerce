@@ -3,6 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const session = require('express-session');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -24,9 +25,14 @@ app.use(function(req, res, next) {
 
 
 // =================PASSPORT FILES=================
+app.use(session({
+  secret: 'passport is awesome. Just like Gbinga.',
+  resave: false,
+  saveUninitialized: true,  
+}));
 const passport = require('passport')
-
-
+app.use(passport.initialize());
+app.use(passport.session());
 passport.use(new GitHubStrategy({
     clientID: config.passport.clientID,
     clientSecret: config.passport.clientSecret,
@@ -35,8 +41,17 @@ passport.use(new GitHubStrategy({
   function(accessToken, refreshToken, profile, cb) {
     console.log("Function ran");
     console.log(profile);
+    return cb(null,profile);
   }
 ));
+
+passport.serializeUser((user, cb)=>{
+  cb(null,user);
+})
+passport.deserializeUser((user,cb)=>{
+  cb(null,user)
+})
+// ======================================
 
 
 // view engine setup
