@@ -6,8 +6,38 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var GitHubStrategy = require('passport-github').Strategy;
+const config = require('./config');
 
 var app = express();
+
+const helmet = require('helmet');
+app.use((helmet()));
+
+// Allow cross-origin.....
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+  next();
+});
+
+
+// =================PASSPORT FILES=================
+const passport = require('passport')
+
+
+passport.use(new GitHubStrategy({
+    clientID: config.passport.clientID,
+    clientSecret: config.passport.clientSecret,
+    callbackURL: config.passport.callbackURL
+  },
+  function(accessToken, refreshToken, profile, cb) {
+    console.log("Function ran");
+    console.log(profile);
+  }
+));
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
