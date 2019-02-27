@@ -6,7 +6,7 @@
 
 export default (state = [], action)=>{
     // signiture takes state, we default it to []
-    if (action.type === "AUTH_ACTION"){
+    if ((action.type === "AUTH_ACTION") || (action.type ==="LOGIN_ACTION")){
         // I am going to update, because I care!
         console.log(action.payload.data);
         return action.payload.data
