@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import authAction from '../../actions/authAction';
+import { connect } from 'react-redux';
 
 class Register extends Component{
     constructor(){
@@ -9,12 +10,16 @@ class Register extends Component{
 
     registerSubmit = (event)=>{
         event.preventDefault();
-        console.dir(event.target);
+        // console.dir(event.target);
         const username = event.target[0].value;
         // const username = document.getElementById('email').value;
         const password = event.target[1].value;
-        console.log(username);
-        console.log(password);
+        // console.log(username);
+        // console.log(password);
+        this.props.authAction({
+            username,
+            password,
+        })
     }
 
     render(){
@@ -80,7 +85,8 @@ function mapDispatchToProps(dispatcher){
     // the action to all reducers
     return bindActionCreators({
         authAction: authAction
-    })
+    },dispatcher)
 }
 
-export default Register;
+// export default Register;
+export default connect(mapStateToProps,mapDispatchToProps)(Register);

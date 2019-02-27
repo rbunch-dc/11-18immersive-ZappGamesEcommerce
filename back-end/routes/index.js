@@ -6,8 +6,6 @@ const config = require('../config');
 const connection  = config.pg;
 const db = pgp(connection);
 
-const jwt = require('jsonwebtoken');
-
 router.get('/auth/github',passport.authenticate('github'));
 
 router.get('/auth/github/callback',passport.authenticate('github'),(req,res)=>{
@@ -53,5 +51,14 @@ function sendToken(res,token){
     `
     )
 }
+
+router.post('/register',(req, res)=>{
+  // bcrypt
+  // check if username exist
+  // if not, insert - username, hashed password
+    // - create a token
+  // if so, let react know
+  res.json(req.body);
+})
 
 module.exports = router;
