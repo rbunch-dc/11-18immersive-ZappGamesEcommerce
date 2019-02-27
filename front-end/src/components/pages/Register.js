@@ -21,6 +21,8 @@ class Register extends Component{
             this.setState({
                 showAlert: true
             })
+        }else if(newProps.auth.msg === 'userAdded'){
+            this.props.history.push('/');
         }
     }
 
