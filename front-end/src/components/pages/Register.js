@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
+import authAction from '../../actions/authAction';
 
 class Register extends Component{
     constructor(){
@@ -8,6 +10,11 @@ class Register extends Component{
     registerSubmit = (event)=>{
         event.preventDefault();
         console.dir(event.target);
+        const username = event.target[0].value;
+        // const username = document.getElementById('email').value;
+        const password = event.target[1].value;
+        console.log(username);
+        console.log(password);
     }
 
     render(){
@@ -57,6 +64,23 @@ class Register extends Component{
         </main>
         )
     }
+}
+
+function mapStateToProps(state){
+    // state = rootReducer/store
+    return {
+		// key = this.props.KEY will be accesible to this component
+        // value = property of RootReducer 
+        auth: state.auth       
+    }
+}
+
+function mapDispatchToProps(dispatcher){
+    // dispatch is the the thing that sends
+    // the action to all reducers
+    return bindActionCreators({
+        authAction: authAction
+    })
 }
 
 export default Register;
