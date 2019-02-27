@@ -2,16 +2,25 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import authAction from '../../actions/authAction';
 import { connect } from 'react-redux';
+import SweetAlert from 'sweetalert-react';
+import 'sweetalert/dist/sweetalert.css'
 
 class Register extends Component{
     constructor(){
         super();
+        this.state = {
+            msg: "",
+            showAlert: false
+        }
     }
 
     componentWillReceiveProps(newProps){
         console.log(newProps);
         if(newProps.auth.msg === 'userExists'){
-
+            // let the user know they already registered
+            this.setState({
+                showAlert: true
+            })
         }
     }
 
@@ -30,13 +39,19 @@ class Register extends Component{
     }
 
     render(){
+        const msg = this.state.msg;
         return(
         <main>
+            <SweetAlert
+                show={this.state.showAlert}
+                title="Registration Error"
+                text="Email is already registered. Login or chooose a different email."
+                onConfirm={() => this.setState({ showAlert: false })}
+            />            
             <center>
-
             <div className="container">
                 <div className="z-depth-1 grey lighten-4 row login">
-
+                <h3>{msg}</h3>
                 <form className="col s12" onSubmit={this.registerSubmit}>
                     <div className='row'>
                     <div className='col s12'>
