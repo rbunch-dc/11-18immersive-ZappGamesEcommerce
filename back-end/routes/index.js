@@ -5,6 +5,7 @@ const pgp = require('pg-promise')();
 const config = require('../config');
 const connection  = config.pg;
 const db = pgp(connection);
+const bcrypt = require('bcrypt-nodejs')
 
 router.get('/auth/github',passport.authenticate('github'));
 
@@ -55,10 +56,27 @@ function sendToken(res,token){
 router.post('/register',(req, res)=>{
   // bcrypt
   // check if username exist
+  const checkUsernameQuery = `SELECT * FROM users WHERE username = $1`;
+  db.query(checkUsernameQuery,[req.body.username]).then((results)=>{
+    // console.log(results);
+    if(results.length === 0){
+      // user does not exist!! Let's add them
+      const insertUserQuery = `INSERT INTO users (username) VALUES ($1)`;
+      db.query(insertUserQuery,[req.body.username]).then(()=>{
+        res.json({msg: "userAdded!"});
+      })
+    }else{
+      // User exists. Goodbye.
+      res.json({msg: "userExists"})
+    }
+  }).catch((error)=>{
+    if(error){throw error;}
+  })
+
   // if not, insert - username, hashed password
     // - create a token
   // if so, let react know
-  res.json(req.body);
+  // res.json(req.body);
 })
 
 module.exports = router;
