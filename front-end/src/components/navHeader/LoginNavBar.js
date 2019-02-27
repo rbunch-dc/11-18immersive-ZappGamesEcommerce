@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import loginTab from '../../misc/openWindow';
+import { Link } from 'react-router-dom';
 
 class LoginNavBar extends Component{
     constructor(){
@@ -8,7 +9,11 @@ class LoginNavBar extends Component{
     githubAuth = (event)=>{
 		// The process:
 		// 1. User clicks and opens the new window via loginTab
-        loginTab('http://localhost:3000/auth/github')
+        loginTab('http://localhost:3000/auth/github').then((jwt)=>{
+            console.log(jwt)
+        }).catch((error)=>{
+            console.log(error)
+        })
     }
 			// 2. New window is open to crossOrigin but is github.com
 			// 3. Once user authenticates, github sends them to /auth/github/callback
@@ -24,7 +29,8 @@ class LoginNavBar extends Component{
             <div className="login-nav-bar">
                 <div className="left valign-wrapper">WELCOME TO ZAPP GAMES</div>
                 <div className="right">
-                    <button type="button" onClick={this.githubAuth} class="btn play-button btn-github">Login with github</button>
+                    <Link to="/login">Sign in</Link> or <Link to="/register">Register</Link>
+                    <button type="button" onClick={this.githubAuth} className="btn play-button btn-github">Login with github</button>
                     MY CART 0 ITEM - £0.00    
                 </div>
             </div>

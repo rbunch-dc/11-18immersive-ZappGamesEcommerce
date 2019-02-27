@@ -29,7 +29,7 @@ const loginTab = (myUrl) => {
   // Listen to message from child window
   const authPromise = new Promise((resolve, reject) => {
     eventer(messageEvent, (msg) => {
-      if (!~msg.origin.indexOf(`${window.location.protocol}//${window.location.host}`)) {
+      if (!~msg.origin.indexOf(`localhost`)) {
         authWindow.close();
         reject('Not allowed');
       }

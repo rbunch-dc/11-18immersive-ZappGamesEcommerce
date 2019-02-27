@@ -39,8 +39,8 @@ passport.use(new GitHubStrategy({
     callbackURL: config.passport.callbackURL
   },
   function(accessToken, refreshToken, profile, cb) {
-    console.log("Function ran");
-    console.log(profile);
+    // console.log("Function ran");
+    // console.log(profile);
     return cb(null,profile);
   }
 ));
