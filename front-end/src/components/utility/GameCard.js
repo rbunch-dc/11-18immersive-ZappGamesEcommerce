@@ -1,11 +1,15 @@
 import React from 'react'
 
 function GameCard(props){
+    console.log(props);
+    const images = props.data.screenshot_url.split(',');
+    const rand = Math.floor(Math.random() * images.length)
+    const image = images[rand];
     return(
         <div className="col s3 game-card">
             <div className="card">
             <div className="card-image waves-effect waves-block waves-light">
-            <img className="activator" src="https://images.lukiegames.com/t_300e2/assets/images/PS2/ps2_warriors_p_p4dnam.jpg" />
+            <img className="activator" src={image} />
             </div>
             <div className="card-content">
             <span className="card-title activator grey-text text-darken-4">Card Title<i className="material-icons right">more_vert</i></span>
