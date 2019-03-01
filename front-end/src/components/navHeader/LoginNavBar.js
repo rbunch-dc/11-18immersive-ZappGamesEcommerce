@@ -40,7 +40,7 @@ class LoginNavBar extends Component{
         console.log(this.props.auth)
         return(
             <div className="login-nav-bar">
-                <div className="left valign-wrapper">WELCOME TO ZAPP GAMES</div>
+                <div className="left valign-wrapper"><Link to ="/">WELCOME TO ZAPP GAMES</Link></div>
                 <div className="right">
                     {rightNavBar}
                     <Link to="/cart">0 ITEM - $0.00</Link>

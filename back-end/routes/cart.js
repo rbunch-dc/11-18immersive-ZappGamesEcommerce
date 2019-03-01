@@ -6,6 +6,7 @@ const db = require('../database');
 router.post('/getCart',(req, res)=>{
     // res.json("test");
     const token = req.body.token;
+    console.log(token)
     const getUser = `SELECT id from users WHERE token = $1`
     db.query(getUser,[token]).then((results)=>{
         if(results.length === 0){
@@ -24,6 +25,7 @@ router.post('/getCart',(req, res)=>{
 // /cart/getCart
 router.post('/updateCart',(req, res)=>{
     // res.json("test");
+    console.log(req.body);
     const token = req.body.token;
     const itemId = req.body.itemId
     const getUser = `SELECT id from users WHERE token = $1`
@@ -36,7 +38,7 @@ router.post('/updateCart',(req, res)=>{
         }else{
             // this is a legit token. I know what user this is.
             const uid = results[0].id;
-            const addToCartQuery = `INSERT INTO cart (uid,gid,date)
+            const addToCartQuery = `INSERT INTO cart (uid,gid,dateadded)
                 VALUES
                 ($1,$2,NOW())`
             db.query(addToCartQuery,[uid,itemId]).then(()=>{

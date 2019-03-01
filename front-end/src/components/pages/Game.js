@@ -28,7 +28,7 @@ class Game extends Component{
 
     addToCart = (event)=>{
         // token, item
-        const token = this.props.token
+        const token = this.props.auth.token;
         this.props.updateCart(token,this.state.game.id)
     }
 
