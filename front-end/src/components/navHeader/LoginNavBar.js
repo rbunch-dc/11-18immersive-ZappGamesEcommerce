@@ -43,7 +43,7 @@ class LoginNavBar extends Component{
                 <div className="left valign-wrapper">WELCOME TO ZAPP GAMES</div>
                 <div className="right">
                     {rightNavBar}
-                    MY CART 0 ITEM - £0.00
+                    <Link to="/cart">0 ITEM - $0.00</Link>
                 </div>
             </div>
         )
