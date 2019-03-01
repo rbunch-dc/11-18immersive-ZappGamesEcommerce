@@ -16,6 +16,23 @@ router.post('/getCart',(req, res)=>{
             })
         }else{
             const uid = results[0].id;
+            const getCartTotals = `SELECT * FROM cart 
+                INNER JOIN games on games.id = cart.gid
+                WHERE uid = $1`;
+            db.query(getCartTotals,[uid]).then((results)=>{
+                const totals = `SELECT SUM(price) as totalPrice, count(price) as totalItems
+                    FROM cart
+                    INNER JOIN games on games.id = cart.gid
+                    WHERE uid = $1`;
+                    db.query(totals,[uid]).then((totalNumbers)=>{
+                        const responseData = {
+                            contents: results,
+                            total: totalNumbers.totalPrice,
+                            items: totalNumbers.totalItems
+                        }
+                        res.json(responseData);
+                    })
+            })
         }
     }).catch((error)=>{
         if(error){throw error;} 
