@@ -14,6 +14,13 @@ class Game extends Component{
         }
     }
 
+    componentWillReceiveProps(newProps){
+        if(newProps.cart.length !== this.props.cart.length){
+            // user just chaned their cart... Onward to home page! 
+            this.props.history.push('/?added=item')
+        }
+    }
+
     componentDidMount(){
         console.log(this.props.match.params.id);
         const gid = this.props.match.params.id
@@ -72,7 +79,8 @@ class Game extends Component{
 
 function mapStateToProps(state){
     return{
-        auth: state.auth
+        auth: state.auth,
+        cart: state.cart,
     }
 }
 
