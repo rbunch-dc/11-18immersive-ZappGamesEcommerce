@@ -33,6 +33,7 @@ class LoginNavBar extends Component{
         }else{
             // user is not logged in!
             rightNavBar = <span>
+                <Link to='/addFile'>Add Files</Link>
                 <Link to="/login">Sign in</Link> or <Link to="/register">Register</Link>
                 <button type="button" onClick={this.githubAuth} className="btn play-button btn-github">Login with github</button>
             </span>
@@ -43,7 +44,7 @@ class LoginNavBar extends Component{
                 <div className="left valign-wrapper"><Link to ="/">WELCOME TO ZAPP GAMES</Link></div>
                 <div className="right">
                     {rightNavBar}
-                    <Link to="/cart">0 ITEM - $0.00</Link>
+                    <Link to="/cart">{this.props.cart.items} - ${this.props.cart.total}</Link>
                 </div>
             </div>
         )
@@ -52,7 +53,8 @@ class LoginNavBar extends Component{
 
 function mapStateToProps(state){
     return{
-        auth: state.auth
+        auth: state.auth,
+        cart: state.cart
     }
 }
 export default connect(mapStateToProps)(LoginNavBar);

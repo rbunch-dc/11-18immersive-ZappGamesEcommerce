@@ -4,6 +4,9 @@ const passport = require('passport');
 const db = require('../database');
 const bcrypt = require('bcrypt-nodejs')
 const randToken = require('rand-token');
+const multer = require('multer');
+var upload = multer({dest: 'public/images'}).array('files');
+console.log(upload)
 
 router.get('/auth/github',passport.authenticate('github'));
 
@@ -54,16 +57,15 @@ function sendToken(res,token){
 router.post('/register',(req, res)=>{
   // bcrypt
   // check if username exist
-  const checkUsernameQuery = `SELECT * FROM users WHERE username = $1`;
-  db.query(checkUsernameQuery,[req.body.username]).then((results)=>{
-    // console.log(results);
+  const checkUsernameQuery = `SELECT * FROM investor_users WHERE username = $1`;
+  db.query(checkUsernameQuery,[req.body.email]).then((results)=>{
     if(results.length === 0){
       // user does not exist!! Let's add them
-      const insertUserQuery = `INSERT INTO users (username,password,token) VALUES ($1,$2,$3)`;
+      const insertUserQuery = `INSERT INTO investor_users (name,email,hash,picture,token) VALUES ($1,$2,$3,$4,$5)`;
       const token = randToken.uid(50);
       // use bcrypt.hashSync to make their password something evil
       const hash = bcrypt.hashSync(req.body.password);
-      db.query(insertUserQuery,[req.body.username,hash,token]).then(()=>{
+      db.query(insertUserQuery,[req.body.name,req.body.email,hash,req.body.picture,token]).then(()=>{
         res.json({
           msg: "userAdded",
           token,
@@ -128,4 +130,10 @@ router.post('/login',(req, res)=>{
   })
 })
 
+
+router.post('/filesUp',upload,(req, res)=>{
+  console.log("joe")
+})
+
 module.exports = router;
+

@@ -25,11 +25,15 @@ router.post('/getCart',(req, res)=>{
                     INNER JOIN games on games.id = cart.gid
                     WHERE uid = $1`;
                     db.query(totals,[uid]).then((totalNumbers)=>{
+                        console.log("=============totalNumbers==================")
+                        console.log(totalNumbers)
+                        console.log("=============totalNumbers==================")
                         const responseData = {
                             contents: results,
-                            total: totalNumbers.totalPrice,
-                            items: totalNumbers.totalItems
+                            total: totalNumbers[0].totalprice,
+                            items: totalNumbers[0].totalitems,
                         }
+                        // console.log(responseData)
                         res.json(responseData);
                     })
             })
@@ -59,12 +63,29 @@ router.post('/updateCart',(req, res)=>{
                 VALUES
                 ($1,$2,NOW())`
             db.query(addToCartQuery,[uid,itemId]).then(()=>{
-                const getCartTotals = `SELECT * FROM cart WHERE uid = $1`
+
                 db.query(getCartTotals,[uid]).then((results)=>{
-                    res.json(results)
-                }).catch((error)=>{
-                    if(error){throw error;}
-                })
+                    const totals = `SELECT SUM(price) as totalPrice, count(price) as totalItems
+                        FROM cart
+                        INNER JOIN games on games.id = cart.gid
+                        WHERE uid = $1`;
+                        db.query(totals,[uid]).then((totalNumbers)=>{
+                            console.log("=============totalNumbers==================")
+                            console.log(totalNumbers)
+                            console.log("=============totalNumbers==================")
+                            const responseData = {
+                                contents: results,
+                                total: totalNumbers[0].totalprice,
+                                items: totalNumbers[0].totalitems,
+                            }
+                            // console.log(responseData)
+                            res.json(responseData);
+                        })
+                    })
+
+
+
+
             }).catch((error)=>{
                 if(error){throw error;}
             })
